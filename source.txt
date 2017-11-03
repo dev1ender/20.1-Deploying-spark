@@ -1,0 +1,8 @@
+
+--loadind the data from hdfs and then maping it with the feilds and then creating the data frame of it and then registering the table with the name census 
+
+val census_data = sc.textFile("/user/cloudera/20.1/census.csv").map(x => x.split(",")).map(x =>(x(0),x(2),x(3),x(4),x(5),x(6),x(7),x(8),x(9),x(10),x(11),x(12),x(13),x(14),x(15),x(16),x(17),x(18),x(19),x(20),x(21),x(22))).toDF("State","People","Males","Females","Growth_1991_2001","Rural","Urban","Scheduled_Caste_Population","Percentage_Sc_To_Total","Number_of_households","Household_size_per_household","Sex_Ration_Females_per_1000_males","Sex_ratio_0_6_years","Scheduled_Tribe_population","Percentage_to_total_population_ST","Persons_literate","Males_literate","Females_literate","Persons_literacy_rate","males_literacy_rate","Female_literacy_rate","Total_educated").registerTempTable("census")
+
+--sql query for the same
+val population = sqlContext.sql("select State,sum(People) as total_population from census group by State order by total_population DESC").show()
+
